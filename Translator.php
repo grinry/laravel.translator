@@ -8,6 +8,7 @@ class Translator {
      * @var Translator
      */
     private static $_instance = null;
+
     /**
      * @var array
      */
