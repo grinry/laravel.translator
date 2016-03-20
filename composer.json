@@ -1,0 +1,27 @@
+{
+  "name": "kiberzauras/laravel.translator",
+  "description": "Multilanguage support for Laravel 5.1+ routes",
+  "keywords": ["laravel", "multilanguage", "kiberzauras", "translations"],
+  "license": "MIT",
+  "time": "2016-03-19",
+  "authors": [
+    {
+      "name": "Rytis Grincevicius",
+      "email": "rytis@kiberzauras.com",
+      "homepage": "http://www.github.com/kiberzauras/laravel.translator"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9"
+  },
+  "autoload": {
+    "files": [
+      "helpers.php"
+    ],
+    "psr-4": {
+      "Kiberzauras\\Translator\\": ""
+    }
+  }
+}
+
+
