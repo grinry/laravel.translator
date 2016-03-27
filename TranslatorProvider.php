@@ -8,13 +8,11 @@ class TranslatorProvider extends ServiceProvider{
 
     public function boot()
     {
-
         $this->publisher();
     }
 
     public function register()
     {
-
     }
 
     private function publisher()
