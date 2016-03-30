@@ -1,19 +1,21 @@
 <?php
 
 namespace Kiberzauras\Translator\Eloquent;
-use Kiberzauras\Translator\Translator as MainTranslator;
+use Kiberzauras\Translator\Translator;
 
 /**
- * Class Translator
+ * Class Translate
  * @package Kiberzauras\Translator\Eloquent
  * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
  */
-class Translator {
+class Translate {
 
     /**
      * @var string
      */
-    private $translations = '';
+    private $translations = [
+        'en'=>'empty'
+    ];
     private $locale;
 
     /**
@@ -24,8 +26,11 @@ class Translator {
     public function __construct($string = '', $domain = '')
     {
         $decode = json_decode($string, true);
-        $this->translations = $decode ? $decode : $string;
-        $this->locale = MainTranslator::getLocale();
+        $this->translations = $decode ? $decode : [
+            config('app.locale') => $string,
+            config('app.fallback_locale') => $string
+        ];
+        $this->locale = Translator::getLocale();
     }
 
     /**
@@ -57,14 +62,20 @@ class Translator {
     {
         $translations = [];
         foreach($this->translations as $key => $value):
-            $translations[$key] = MainTranslator::applyArguments($value, $arguments);
+            $translations[$key] = Translator::applyArguments($value, $arguments);
         endforeach;
         $this->translations = $translations;
         return $this;
     }
 
+    /**
+     * @param int $number
+     * @return $this
+     * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
+     * @todo
+     */
     public function plural($number = 0)
     {
-
+        return $this;
     }
 }

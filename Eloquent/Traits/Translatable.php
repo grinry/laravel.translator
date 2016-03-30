@@ -1,7 +1,7 @@
 <?php
 
 namespace Kiberzauras\Translator\Eloquent\Traits;
-use Kiberzauras\Translator\Eloquent\Translator;
+use Kiberzauras\Translator\Eloquent\Translate;
 
 /**
  * Class Translatable
@@ -9,43 +9,93 @@ use Kiberzauras\Translator\Eloquent\Translator;
  * @package Kiberzauras\Translator\Eloquent\Traits
  * @method static creating($model)
  * @method static updating($model)
+ * @method static created($model)
+ * @method static updated($model)
  * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
  */
 trait Translatable {
+
+    /**
+     * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
+     */
     protected static function bootTranslatable()
     {
-        /*parent::boot();
-        static::creating(function($model){
-            $model->foo = 'foo';
-        });*/
         static::creating(function($model) {
-            if (config('translator.translatable_as_json')) {
-                foreach ((array) with(new self)->translatable as $item) {
-                    $model->{$item} = json_encode($model->{$item});
+            if (config('translator.translatable_as_json', true)) {
+                foreach ((array)with(new self)->translatable as $item) {
+                    if ($model->{$item}) {
+                        if (is_array($model->{$item})) {
+                            $model->{$item} = json_encode($model->{$item});
+                        } elseif (is_string($model->{$item}) && !is_array(json_decode($model->{$item}, true))) {
+                            $model->{$item} = json_encode([config('app.locale') => $model->{$item}]);
+                        }
+                    }
                 }
             } else {
+                //TODO: save strings to translation models
                 $items = [];
-                foreach ((array) with(new self)->translatable as $item) {
+                foreach ((array)with(new self)->translatable as $item) {
                     $items[$item] = $model->{$item};
-                    $model->{$item} = isset($model->{$item}[config('app.locale')])?$model->{$item}[config('app.locale')]:'';
+                    $model->{$item} = isset($model->{$item}[config('app.locale')]) ? $model->{$item}[config('app.locale')] : '';
                 }
             }
         });
 
         static::updating(function($model) {
-//            Translate::update($model->name, $model->getOriginal('name'));
-//            $model->name = $model->getOriginal('name');
-//            Translate::update($model->description, $model->getOriginal('description'));
-//            $model->description = $model->getOriginal('description');
+            //Check if string was json or translation key
+            foreach ((array) with(new self)->translatable as $item) {
+                if ($model->{$item}) {
+                    $updated_locales = $model->{$item};
+
+                    $original = $model->getOriginal($item);
+                    $original_locales = json_decode($original, true);
+
+                    if (!is_array($original_locales) && is_string($original)) {
+                        $original_locales = [
+                            config('app.fallback_locale') => $original
+                        ];
+                    }
+
+                    if (is_string($model->{$item}) && !is_array(json_decode($model->{$item}, true))) {
+                        $updated_locales = [config('app.locale') => $model->{$item}];
+                    } elseif(is_string($model->{$item})) {
+                        $updated_locales = json_decode($model->{$item}, true);
+                    }
+
+                    //If translations was in json, update locales in this models attribute
+                    if (is_array($original_locales)) {
+                        //Find and change only updated locales
+                        foreach ($updated_locales as $locale => $value) {
+                            $original_locales[$locale] = $value;
+                        }
+                        $model->{$item} = json_encode($original_locales);
+                    } else {
+                        //TODO: update locales in translation model
+                        //
+                    }
+                }
+            }
         });
 
+        static::created(function($model) {
+            foreach ((array) with(new self)->translatable as $item) {
+                $model->{$item} = new Translate($model->{$item}, static::class);
+            }
+        });
+
+        static::updated(function($model) {
+            foreach ((array) with(new self)->translatable as $item) {
+                $model->{$item} = new Translate($model->{$item}, static::class);
+            }
+        });
     }
 
-    public function translate()
-    {
-        return $this->morphMany('Kiberzauras\Translator\Eloquent\Key', 'domain', 'key', 'domain');
-    }
-
+    /**
+     * @param array $attributes
+     * @param null $connection
+     * @return mixed
+     * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
+     */
     public function newFromBuilder($attributes = [], $connection = null)
     {
         $model = parent::newFromBuilder($attributes, $connection);
@@ -55,7 +105,7 @@ trait Translatable {
             $override = in_array($key, (array) $this->translatable);
 
             if ($override) {
-                $model->$key = new Translator($value, static::class);
+                $model->$key = new Translate($value, static::class);
             }
         }
 
