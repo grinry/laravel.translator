@@ -2,12 +2,12 @@
 
 [![Total Downloads](https://poser.pugx.org/kiberzauras/laravel.translator/d/total.svg)](https://packagist.org/packages/kiberzauras/laravel.translator)
 [![Latest Stable Version](https://poser.pugx.org/kiberzauras/laravel.translator/v/stable.svg)](https://packagist.org/packages/kiberzauras/laravel.translator)
-[![Latest Unstable Version](https://poser.pugx.org/kiberzauras/laravel.multilanguage/v/unstable.svg)](https://packagist.org/packages/kiberzauras/laravel.translator)
-[![License](https://poser.pugx.org/kiberzauras/laravel.translator/license.svg)](https://packagist.org/packages/kiberzauras/laravel.translator)
+[![Latest Unstable Version](https://poser.pugx.org/kiberzauras/laravel.translator/v/unstable.svg)](https://packagist.org/packages/kiberzauras/laravel.translator)
+[![License](https://poser.pugx.org/kiberzauras/laravel.translator/license.svg)](https://github.com/kiberzauras/laravel.translator/blob/master/LICENSE.md)
 
-This package will help you to easy create multilanguage routes on top of your single language website. With this package
- you will be able to access your website with these routes example.com, example.com/en, example.com/en/page and etc. and
- there is no need to change your routes.php file!
+This package will help you to easy create multilanguage support for your website. 
+With this package you can configure your eloquent model attributes to return data depending of application locale.
+Works with new models and old (with already filled data) ones.
 
 ### Installation
 
