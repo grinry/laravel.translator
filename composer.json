@@ -1,9 +1,9 @@
 {
   "name": "kiberzauras/laravel.translator",
-  "description": "Multilanguage support for Laravel 5.1+ routes",
-  "keywords": ["laravel", "multilanguage", "kiberzauras", "translations"],
+  "description": "Multilanguage support for Laravel 5 eloquent models",
+  "keywords": ["laravel", "multilanguage", "kiberzauras", "translations", "eloquent"],
   "license": "MIT",
-  "time": "2016-03-20 12:15",
+  "time": "2016-03-30 23:12",
   "authors": [
     {
       "name": "Rytis Grincevicius",
