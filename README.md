@@ -43,7 +43,7 @@ In generated migration file change column types:
 
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
                 $table->longText('name')->change();
                 $table->longText('description')->change();
             });
