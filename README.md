@@ -16,7 +16,7 @@ At first you need to install our package:
     composer require "kiberzauras/laravel.translator"
 
 Then open your eloquent model that you want to be translatable and add Translatable trait
- and protected property $translatable with array of all properties you want to be translatable,
+ and protected property `$translatable` with array of all properties you want to be translatable,
 for example we use Product model:
 
      <?php
