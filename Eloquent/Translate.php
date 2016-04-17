@@ -43,6 +43,15 @@ class Translate {
     }
 
     /**
+     * @return string
+     * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
+     */
+    public function get()
+    {
+        return (string) $this->translations[$this->locale];
+    }
+
+    /**
      * @param string $locale
      * @return $this
      * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
