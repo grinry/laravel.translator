@@ -3,7 +3,7 @@
   "description": "Multilanguage support for Laravel 5 eloquent models",
   "keywords": ["laravel", "multilanguage", "kiberzauras", "translations", "eloquent"],
   "license": "MIT",
-  "time": "2016-03-30 23:12",
+  "time": "2016-04-21 14:14",
   "authors": [
     {
       "name": "Rytis Grincevicius",
