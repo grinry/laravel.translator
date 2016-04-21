@@ -1,6 +1,6 @@
 {
   "name": "kiberzauras/laravel.translator",
-  "description": "Multilanguage support for Laravel 5 eloquent models",
+  "description": "Translatable Eloquent's for Laravel 5",
   "keywords": ["laravel", "multilanguage", "kiberzauras", "translations", "eloquent"],
   "license": "MIT",
   "time": "2016-04-21 14:14",
