@@ -1,5 +1,6 @@
 ## Translatable Eloquent's for Laravel 5
 
+[![Made for Laravel 5](https://img.shields.io/badge/laravel-5.2-green.svg)](https://laravel.com/)
 [![Total Downloads](https://poser.pugx.org/kiberzauras/laravel.translator/d/total.svg)](https://packagist.org/packages/kiberzauras/laravel.translator)
 [![Latest Stable Version](https://poser.pugx.org/kiberzauras/laravel.translator/v/stable.svg)](https://packagist.org/packages/kiberzauras/laravel.translator)
 [![Latest Unstable Version](https://poser.pugx.org/kiberzauras/laravel.translator/v/unstable.svg)](https://packagist.org/packages/kiberzauras/laravel.translator)
