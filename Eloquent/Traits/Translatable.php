@@ -1,6 +1,7 @@
 <?php
 
 namespace Kiberzauras\Translator\Eloquent\Traits;
+use Illuminate\Database\Eloquent\Model;
 use Kiberzauras\Translator\Eloquent\Translate;
 
 /**
@@ -20,12 +21,14 @@ trait Translatable {
      */
     protected static function bootTranslatable()
     {
-        static::creating(function($model) {
+        static::creating(function(Model $model) {
             if (config('translator.translatable_as_json', true)) {
                 foreach ((array)with(new self)->translatable as $item) {
                     if ($model->{$item}) {
                         if (is_array($model->{$item})) {
-                            $model->{$item} = json_encode($model->{$item});
+                            $model->{$item} = json_encode(array_filter($model->{$item}, function($var) {
+                                return strlen(strip_tags(trim($var))) != 0;
+                            }));
                         } elseif (is_string($model->{$item}) && !is_array(json_decode($model->{$item}, true))) {
                             $model->{$item} = json_encode([config('app.locale') => $model->{$item}]);
                         }
@@ -41,11 +44,13 @@ trait Translatable {
             }
         });
 
-        static::updating(function($model) {
+        static::updating(function(Model $model) {
             //Check if string was json or translation key
             foreach ((array) with(new self)->translatable as $item) {
                 if ($model->{$item}) {
-                    $updated_locales = $model->{$item};
+                    $updated_locales = array_filter($model->{$item}, function($var) {
+                        return strlen(strip_tags(trim($var))) != 0;
+                    });
 
                     $original = $model->getOriginal($item);
                     $original_locales = json_decode($original, true);
@@ -56,10 +61,10 @@ trait Translatable {
                         ];
                     }
 
-                    if (is_string($model->{$item}) && !is_array(json_decode($model->{$item}, true))) {
-                        $updated_locales = [config('app.locale') => $model->{$item}];
-                    } elseif(is_string($model->{$item})) {
-                        $updated_locales = json_decode($model->{$item}, true);
+                    if (is_string($updated_locales) && !is_array(json_decode($updated_locales, true))) {
+                        $updated_locales = [config('app.locale') => $updated_locales];
+                    } elseif(is_string($updated_locales)) {
+                        $updated_locales = json_decode($updated_locales, true);
                     }
 
                     //If translations was in json, update locales in this models attribute
@@ -77,17 +82,18 @@ trait Translatable {
             }
         });
 
-        static::created(function($model) {
+        static::created(function(Model $model) {
             foreach ((array) with(new self)->translatable as $item) {
                 $model->{$item} = new Translate($model->{$item}, static::class);
             }
         });
 
-        static::updated(function($model) {
+        static::updated(function(Model $model) {
             foreach ((array) with(new self)->translatable as $item) {
                 $model->{$item} = new Translate($model->{$item}, static::class);
             }
         });
+
     }
 
     /**

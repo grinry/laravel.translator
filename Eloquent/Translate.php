@@ -17,6 +17,7 @@ class Translate {
         'en'=>'empty'
     ];
     private $locale;
+    private $enforce = false;
 
     /**
      * Translator constructor.
@@ -27,7 +28,6 @@ class Translate {
     {
         $decode = json_decode($string, true);
         $this->translations = $decode ? $decode : [
-            config('app.locale') => $string,
             config('app.fallback_locale') => $string
         ];
         $this->locale = Translator::getLocale();
@@ -39,7 +39,7 @@ class Translate {
      */
     public function __toString()
     {
-        return (string) $this->translations[$this->locale];
+        return $this->get();
     }
 
     /**
@@ -48,17 +48,28 @@ class Translate {
      */
     public function get()
     {
-        return (string) $this->translations[$this->locale];
+        if ($this->enforce)
+            return (string) array_key_exists($this->locale, $this->translations) ? $this->translations[$this->locale] : '';
+
+        if (array_key_exists($this->locale, $this->translations))
+            return (string) $this->translations[$this->locale];
+
+        if (array_key_exists(config('app.fallback_locale'), $this->translations))
+            return (string) $this->translations[config('app.fallback_locale')];
+
+        return (string) array_values($this->translations)[0];
     }
 
     /**
      * @param string $locale
+     * @param bool $enforce
      * @return $this
      * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
      */
-    public function locale($locale = '')
+    public function locale($locale = '', $enforce = false)
     {
         $this->locale = $locale;
+        $this->enforce = $enforce;
         return $this;
     }
 

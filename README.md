@@ -63,6 +63,13 @@ Sometimes You need to get other locales translation when current is set too, the
     echo $product->name->locale('ru');
     echo $product->name->locale('en-Us');
     
+ Note, that if selected locale doesn't have a translation, it will show fallback locale, if this is not translated too 
+ it will find first possible translation or will leave it blank.
+ In some cases you must get selected language translation without using fallbacks (product name editing in some admin panel)
+ then you can force to check only selected language translation, if translation doesnt exist it will return empty string:
+ 
+    echo $product->name->locale('ru', true);
+    
  Sometimes you may wish to pass variable to translation, you can retrieve them like this:
  
     //eg. translation is Hello :name!
