@@ -26,7 +26,7 @@ class Translate {
      */
     public function __construct($string = '', $domain = '')
     {
-        $decode = json_decode($string, true);
+        $decode = is_string($string) ? json_decode($string, true) : $string;
         $this->translations = $decode ? $decode : [
             config('app.fallback_locale') => $string
         ];

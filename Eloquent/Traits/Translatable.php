@@ -48,9 +48,7 @@ trait Translatable {
             //Check if string was json or translation key
             foreach ((array) with(new self)->translatable as $item) {
                 if ($model->{$item}) {
-                    $updated_locales = array_filter($model->{$item}, function($var) {
-                        return strlen(strip_tags(trim($var))) != 0;
-                    });
+                    $updated_locales = $model->{$item};
 
                     $original = $model->getOriginal($item);
                     $original_locales = json_decode($original, true);
@@ -95,6 +93,17 @@ trait Translatable {
         });
 
     }
+
+//    public function __get($key)
+//    {
+//        if (in_array($key, (array) $this->translatable)) {
+//            if (array_key_exists($key, $this->attributes) || $this->hasGetMutator($key)) {
+//                return new Translate($this->getAttributeValue($key), static::class);
+//            }
+//        }
+//        // TODO: Implement __get() method.
+//        return parent::__get($key);
+//    }
 
     /**
      * @param array $attributes
