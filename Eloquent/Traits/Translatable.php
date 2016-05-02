@@ -69,7 +69,8 @@ trait Translatable {
                     if (is_array($original_locales)) {
                         //Find and change only updated locales
                         foreach ($updated_locales as $locale => $value) {
-                            $original_locales[$locale] = $value;
+                            if (strlen(strip_tags(trim($value))) != 0)
+                                $original_locales[$locale] = $value;
                         }
                         //remove empty translations from array and save as json
                         $model->{$item} = json_encode(array_filter($original_locales, function($var) {
