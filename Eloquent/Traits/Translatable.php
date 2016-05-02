@@ -71,7 +71,10 @@ trait Translatable {
                         foreach ($updated_locales as $locale => $value) {
                             $original_locales[$locale] = $value;
                         }
-                        $model->{$item} = json_encode($original_locales);
+                        //remove empty translations from array and save as json
+                        $model->{$item} = json_encode(array_filter($original_locales, function($var) {
+                            return strlen(strip_tags(trim($var))) != 0;
+                        }));
                     } else {
                         //TODO: update locales in translation model
                         //
