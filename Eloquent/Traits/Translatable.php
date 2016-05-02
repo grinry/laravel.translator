@@ -26,9 +26,10 @@ trait Translatable {
                 foreach ((array)with(new self)->translatable as $item) {
                     if ($model->{$item}) {
                         if (is_array($model->{$item})) {
-                            $model->{$item} = json_encode(array_filter($model->{$item}, function($var) {
+                            $translations = array_filter($model->{$item}, function($var) {
                                 return strlen(strip_tags(trim($var))) != 0;
-                            }));
+                            });
+                           $model->{$item} = count($translations) ? json_encode($translations) : '';
                         } elseif (is_string($model->{$item}) && !is_array(json_decode($model->{$item}, true))) {
                             $model->{$item} = json_encode([config('app.locale') => $model->{$item}]);
                         }
@@ -73,9 +74,10 @@ trait Translatable {
                                 $original_locales[$locale] = $value;
                         }
                         //remove empty translations from array and save as json
-                        $model->{$item} = json_encode(array_filter($original_locales, function($var) {
+                        $translations = array_filter($original_locales, function($var) {
                             return strlen(strip_tags(trim($var))) != 0;
-                        }));
+                        });
+                        $model->{$item} = count($translations) ? json_encode($translations) : '';
                     } else {
                         //TODO: update locales in translation model
                         //
