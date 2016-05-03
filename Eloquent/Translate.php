@@ -1,6 +1,7 @@
 <?php
 
 namespace Kiberzauras\Translator\Eloquent;
+use JsonSerializable;
 use Kiberzauras\Translator\Translator;
 
 /**
@@ -8,14 +9,12 @@ use Kiberzauras\Translator\Translator;
  * @package Kiberzauras\Translator\Eloquent
  * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
  */
-class Translate {
+class Translate implements JsonSerializable {
 
     /**
      * @var string
      */
-    private $translations = [
-        'en'=>'empty'
-    ];
+    private $translations = [];
     private $locale;
     private $enforce = false;
 
@@ -38,6 +37,18 @@ class Translate {
      * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
      */
     public function __toString()
+    {
+        return $this->get();
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
     {
         return $this->get();
     }
