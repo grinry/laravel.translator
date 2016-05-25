@@ -12,7 +12,8 @@ if (!function_exists('_t')) {
      * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
      */
    function _t($string = '', $arguments = array(), $domain = 'default', $locale = '') {
-       return Translator::translate($string, $arguments, $domain, $locale);
+       return $string. '*';
+       //return Translator::translate($string, $arguments, $domain, $locale);
    }
 }
 
