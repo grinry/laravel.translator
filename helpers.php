@@ -2,21 +2,6 @@
 use Kiberzauras\Translator\Path;
 use Kiberzauras\Translator\Translator;
 
-if (!function_exists('_t')) {
-    /**
-     * @param string $string
-     * @param array|string $arguments
-     * @param string $domain
-     * @param string $locale
-     * @return string
-     * @author Rytis Grincevičius <rytis.grincevicius@gmail.com>
-     */
-   function _t($string = '', $arguments = array(), $domain = 'default', $locale = '') {
-       return $string. '*';
-       //return Translator::translate($string, $arguments, $domain, $locale);
-   }
-}
-
 if (!function_exists('translations_path')) {
     /**
      * @param string $path
