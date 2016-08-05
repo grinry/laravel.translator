@@ -72,6 +72,9 @@ trait Translatable {
                         foreach ($updated_locales as $locale => $value) {
                             if (strlen(strip_tags(trim($value))) != 0)
                                 $original_locales[$locale] = $value;
+                                
+                            if ($value === '') //Remove translation if empty string given
+                                unset($original_locales[$locale]);
                         }
                         //remove empty translations from array and save as json
                         $translations = array_filter($original_locales, function($var) {
