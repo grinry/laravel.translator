@@ -135,4 +135,26 @@ trait Translatable {
 
         return $model;
     }
+    /**
+     * @return array
+     */
+    public function getTranslatableAttributes()
+    {
+        return $this->translatable;
+    }
+    /**
+     * @param string $attribute
+     * @return bool
+     */
+    public function isAttributeTranslatable($attribute)
+    {
+        return in_array($attribute, $this->translatable);
+    }
+    /**
+     * @return bool
+     */
+    public function isModelTranslatable()
+    {
+        return count($this->translatable) > 0;
+    }
 }
