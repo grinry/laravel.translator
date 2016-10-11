@@ -135,26 +135,45 @@ trait Translatable {
 
         return $model;
     }
+
+    /**
+     * @return bool
+     *
+     * @author Rytis Grincevičius <rytis@inlu.net>
+     */
+    public static function hasTranslatableTrait()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     *
+     * @author Rytis Grincevičius <rytis@inlu.net>
+     */
+    public static function hasTranslatableAttribute()
+    {
+        return count(self::getTranslatableAttributes()) > 0;
+    }
+
     /**
      * @return array
+     *
+     * @author Rytis Grincevičius <rytis@inlu.net>
      */
-    public function getTranslatableAttributes()
+    public static function getTranslatableAttributes()
     {
-        return $this->translatable;
+        return (array) with(new self)->translatable;
     }
+
     /**
-     * @param string $attribute
+     * @param string|array $attribute
      * @return bool
+     *
+     * @author Rytis Grincevičius <rytis@inlu.net>
      */
-    public function isAttributeTranslatable($attribute)
+    public static function isAttributeTranslatable($attribute)
     {
-        return in_array($attribute, $this->translatable);
-    }
-    /**
-     * @return bool
-     */
-    public function isModelTranslatable()
-    {
-        return count($this->translatable) > 0;
+        return count(array_diff((array) $attribute, self::getTranslatableAttributes())) === 0;
     }
 }
