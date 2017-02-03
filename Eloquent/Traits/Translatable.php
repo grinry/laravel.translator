@@ -54,7 +54,9 @@ trait Translatable {
                     $original = $model->getOriginal($item);
                     $original_locales = json_decode($original, true);
 
-                    if (!is_array($original_locales) && is_string($original)) {
+                    if (!is_array($original_locales) && is_string($original)
+                        || !$original_locales && is_string($original)
+                        || !$original_locales && is_null($original)) {
                         $original_locales = [
                             config('app.fallback_locale') => $original
                         ];
