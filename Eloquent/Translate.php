@@ -70,6 +70,14 @@ class Translate implements JsonSerializable {
 
         return (string) array_values($this->translations)[0];
     }
+    
+    /**
+     * @return array
+     */
+    public function all()
+    {
+        return $this->translations;
+    }
 
     /**
      * @param string $locale
