@@ -25,9 +25,9 @@ class Translate implements JsonSerializable {
      */
     public function __construct($string = '', $domain = '')
     {
-        $decode = is_string($string) ? json_decode($string, true) : $string;
+        $decode = is_string($string) ? json_decode($string, true)  : $string;
         $this->translations = $decode ? $decode : [
-            config('app.fallback_locale') => $string
+            config('app.fallback_locale') => $string != '{}' ? $string : null
         ];
         $this->locale = Translator::getLocale();
     }
