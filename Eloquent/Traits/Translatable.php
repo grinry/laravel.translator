@@ -29,7 +29,7 @@ trait Translatable {
                             $translations = array_filter($model->{$item}, function($var) {
                                 return strlen(strip_tags(trim($var))) != 0;
                             });
-                           $model->{$item} = count($translations) ? json_encode($translations) : '';
+                           $model->{$item} = count($translations) ? json_encode($translations) : '{}';
                         } elseif (is_string($model->{$item}) && !is_array(json_decode($model->{$item}, true))) {
                             $model->{$item} = json_encode([config('app.locale') => $model->{$item}]);
                         }
@@ -82,7 +82,7 @@ trait Translatable {
                         $translations = array_filter($original_locales, function($var) {
                             return strlen(strip_tags(trim($var))) != 0;
                         });
-                        $model->{$item} = count($translations) ? json_encode($translations) : '';
+                        $model->{$item} = count($translations) ? json_encode($translations) : '{}';
                     } else {
                         //TODO: update locales in translation model
                         //
